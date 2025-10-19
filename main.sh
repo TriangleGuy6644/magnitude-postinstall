@@ -2,6 +2,14 @@
 
 set -euo pipefail
 
+#set working directory
+WORKDIR="$HOME/magnitude_temp"
+mkdir -p "$WORKDIR"
+cd "$WORKDIR"
+
+#update system
+sudo pacman -Syu
+
 ASCII=$(cat << "EOF"
  ███▄ ▄███▓ ▄▄▄        ▄████  ███▄    █  ██▓▄▄▄█████▓ █    ██ ▓█████▄ ▓█████ 
 ▓██▒▀█▀ ██▒▒████▄     ██▒ ▀█▒ ██ ▀█   █ ▓██▒▓  ██▒ ▓▒ ██  ▓██▒▒██▀ ██▌▓█   ▀ 
@@ -83,6 +91,17 @@ case "$CHOICE" in
 esac
 
 echo "$CHOICE installation complete."
+#setup chaotic aur and cachyos
+sudo pacman-key --recv-key 3056513887B78AEB --keyserver keyserver.ubuntu.com
+sudo pacman-key --lsign-key 3056513887B78AEB
+sudo pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst'
+sudo pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst'
+sudo tee -a /etc/pacman.conf > /dev/null <<EOF
+
+[chaotic-aur]
+Include = /etc/pacman.d/chaotic-mirrorlist
+EOF
+sudo pacman -Syu
 
 
 #get packages file
@@ -99,6 +118,21 @@ flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.f
 flatpak install flathub io.github.zaedus.spider dev.geopjr.Calligraphy io.github.kolunmi.Bazaar org.vinegarhq.Sober
 
 # setup fish shell
-curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
+fish curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
 fisher install pure-fish/pure
-wget
+wget https://raw.githubusercontent.com/TriangleGuy6644/magnitude-postinstall/refs/heads/main/configfiles/config.fish && mv ./config.fish "$HOME/.config/fish/"
+
+#setup kitty
+wget https://raw.githubusercontent.com/TriangleGuy6644/magnitude-postinstall/refs/heads/main/configfiles/kitty.conf && mkdir -p "$HOME/.config/kitty" && mv ./kitty.conf "$HOME/.config/kitty/"
+
+
+echo "Done!!"
+
+
+
+
+
+
+#delete temp directory
+cd "$HOME"
+rm -rf "$WORKDIR"
