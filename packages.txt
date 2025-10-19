@@ -205,6 +205,7 @@ pacman-contrib
 pamac-aur
 papers
 parole
+
 pavucontrol
 perl
 perl-rename
