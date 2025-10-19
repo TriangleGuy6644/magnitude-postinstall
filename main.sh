@@ -84,4 +84,21 @@ esac
 
 echo "$CHOICE installation complete."
 
-PACKAGE_FILE="
+
+#get packages file
+echo "downloading package file."
+wget https://raw.githubusercontent.com/TriangleGuy6644/magnitude-postinstall/refs/heads/main/packages.txt
+#install packages
+PACKAGE_FILE="packages.txt"
+echo "installing packages from, $PACKAGE_FILE..."
+sudo pacman -S --needed - < "$PACKAGE_FILE" --noconfirm
+echo "package installation complete."
+
+#install flatpak things
+flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+flatpak install flathub io.github.zaedus.spider dev.geopjr.Calligraphy io.github.kolunmi.Bazaar org.vinegarhq.Sober
+
+# setup fish shell
+curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
+fisher install pure-fish/pure
+wget
