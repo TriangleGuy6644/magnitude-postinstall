@@ -126,13 +126,13 @@ wget https://raw.githubusercontent.com/TriangleGuy6644/magnitude-postinstall/ref
 wget https://raw.githubusercontent.com/TriangleGuy6644/magnitude-postinstall/refs/heads/main/configfiles/kitty.conf && mkdir -p "$HOME/.config/kitty" && mv ./kitty.conf "$HOME/.config/kitty/"
 
 
+#delete temp directory
+cd "$HOME"
+rm -rf "$WORKDIR"
+
 echo "Done!!"
 
 
 
 
 
-
-#delete temp directory
-cd "$HOME"
-rm -rf "$WORKDIR"
